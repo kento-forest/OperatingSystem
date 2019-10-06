@@ -10,6 +10,9 @@ int main(void) {
     pid_t pid = -42;
     int wstatus = -42;
     int ret = -1;
+    FILE *fd;
+    int c;
+    char str[128];
 
     pid = fork();
     switch(pid) {
@@ -24,6 +27,15 @@ int main(void) {
         
         default:
             printf("Iamyourfather\n");
+            sprintf(str, "/proc/%d/maps", pid);
+            fd = fopen(str, "r");
+            while ((c = fgetc(fd)) != EOF) {
+                if (putchar(c) < 0) {
+                    fclose(fd);
+                    break;
+                }
+            }
+            fclose(fd);
             break;
     }
     ret = waitpid(pid, &wstatus, 0);
