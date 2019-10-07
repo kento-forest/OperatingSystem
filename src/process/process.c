@@ -6,13 +6,15 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#define N 256
+
 int main(void) {
     pid_t pid = -42;
     int wstatus = -42;
     int ret = -1;
-    FILE *fd;
-    int c;
-    char str[128];
+    FILE *fp;
+    char fname[128];
+    char str[N];
 
     pid = fork();
     switch(pid) {
@@ -27,15 +29,12 @@ int main(void) {
         
         default:
             printf("Iamyourfather\n");
-            sprintf(str, "/proc/%d/maps", pid);
-            fd = fopen(str, "r");
-            while ((c = fgetc(fd)) != EOF) {
-                if (putchar(c) < 0) {
-                    fclose(fd);
-                    break;
-                }
+            sprintf(fname, "/proc/%d/maps", pid);
+            fp = fopen(fname, "r");
+            while (fgets(str, N, fp) != NULL) {
+                printf("%s", str);
             }
-            fclose(fd);
+            fclose(fp);
             break;
     }
     ret = waitpid(pid, &wstatus, 0);
