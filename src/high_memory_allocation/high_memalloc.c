@@ -2,38 +2,36 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/gfp.h>
+#include <linux/highmem.h>
 
-#define PRINT_PREF "[LOWLEVEL]: "
-#define PAGES_ORDER_REQUESTED 3
+#define PRINT_PREF "[HIGHMEM]: "
 #define INTS_IN_PAGE (PAGE_SIZE / sizeof(int))
 
-unsigned long virt_addr;
-
 static int __init my_mod_init(void) {
-    int *int_array;
-    int i;
+    struct page *my_page;
+    void *my_ptr;
+    int i, *int_array;
 
     printk(PRINT_PREF "Entering module.\n");
 
-    virt_addr = __get_free_pages(GFP_KERNEL, PAGES_ORDER_REQUESTED);
-    if (!virt_addr) {
-        printk(PRINT_PREF "Error in allocation\n");
-        return -1;
-    }
-    
-    int_array = (int *)virt_addr;
-    for (i = 0; i < INTS_IN_PAGE; i++) {
-        int_array[i] = i;
-    }
+    my_page = alloc_page(GFP_HIGHUSER);
+    if (!my_page) return -1;
+
+    my_ptr = kmap(my_page);
+    int_array = (int *)my_ptr;
 
     for (i = 0; i < INTS_IN_PAGE; i++) {
+        int_array[i] = i;
         printk(PRINT_PREF "array[%d] = %d\n", i, int_array[i]);
     }
+
+    kunmap(my_page);
+    __free_pages(my_page, 0);
+
     return 0;
 }
 
 static void __exit my_mod_exit(void) {
-    free_pages(virt_addr, PAGES_ORDER_REQUESTED);
     printk(PRINT_PREF "Exiting module.\n");
 }
 
