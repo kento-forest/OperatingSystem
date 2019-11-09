@@ -1,0 +1,50 @@
+[Nov10 03:05] [KMALLOC_TEST]: Entering module.
+[  +0.000024] WARNING: CPU: 5 PID: 7909 at /build/linux-WKYm23/linux-4.15.0/mm/page_alloc.c:4222 __alloc_pages_nodemask+0x250/0x2c0
+[  +0.000001] Modules linked in: kmalloc(OE+) xt_conntrack ipt_MASQUERADE nf_nat_masquerade_ipv4 nf_conntrack_netlink nfnetlink xfrm_user xfrm_algo xt_addrtype iptable_filter iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack libcrc32c br_netfilter bridge stp llc aufs pci_stub vboxpci(OE) vboxnetadp(OE) vboxnetflt(OE) overlay vboxdrv(OE) snd_hda_codec_hdmi nvidia_uvm(OE) nvidia_drm(POE) nvidia_modeset(POE) binfmt_misc nls_iso8859_1 snd_hda_codec_realtek nvidia(POE) snd_hda_codec_generic intel_rapl snd_hda_intel x86_pkg_temp_thermal intel_powerclamp snd_hda_codec coretemp snd_hda_core wmi_bmof mxm_wmi intel_wmi_thunderbolt kvm_intel snd_hwdep kvm snd_pcm irqbypass crct10dif_pclmul crc32_pclmul ghash_clmulni_intel pcbc snd_seq_midi snd_seq_midi_event drm_kms_helper snd_rawmidi
+[  +0.000015]  aesni_intel snd_seq drm aes_x86_64 crypto_simd glue_helper ipmi_devintf cryptd input_leds snd_seq_device ipmi_msghandler intel_cstate fb_sys_fops snd_timer syscopyarea intel_rapl_perf sysfillrect sysimgblt snd mei_me soundcore mei shpchp intel_pch_thermal wmi video acpi_pad mac_hid sch_fq_codel parport_pc ppdev lp parport ip_tables x_tables autofs4 hid_generic usbhid hid r8169 nvme mii ahci nvme_core libahci [last unloaded: low_level_memalloc]
+[  +0.000012] CPU: 5 PID: 7909 Comm: insmod Tainted: P           OE    4.15.0-66-generic #75-Ubuntu
+[  +0.000000] Hardware name: MouseComputer Co.,Ltd. LM-iG810/Z390M-S01, BIOS 1.08 02/18/2019
+[  +0.000002] RIP: 0010:__alloc_pages_nodemask+0x250/0x2c0
+[  +0.000000] RSP: 0018:ffffafa347727b40 EFLAGS: 00010246
+[  +0.000001] RAX: 0000000000000000 RBX: ffffffff9c2804c0 RCX: 0000000000000000
+[  +0.000000] RDX: 0000000000000000 RSI: 000000000000000b RDI: 0000000000000000
+[  +0.000000] RBP: ffffafa347727b98 R08: dead000000000200 R09: ffff99526dfd5d00
+[  +0.000001] R10: dead000000000100 R11: 0000000000000001 R12: 00000000014040c0
+[  +0.000000] R13: 000000000000000b R14: 0000000000000000 R15: 0000000000000000
+[  +0.000001] FS:  00007fa408df5540(0000) GS:ffff99525d340000(0000) knlGS:0000000000000000
+[  +0.000000] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000000] CR2: 0000563d6c8f7e98 CR3: 000000039f51a006 CR4: 00000000003606e0
+[  +0.000001] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  +0.000000] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  +0.000000] Call Trace:
+[  +0.000003]  alloc_pages_current+0x6a/0xe0
+[  +0.000002]  kmalloc_order+0x18/0x40
+[  +0.000001]  kmalloc_order_trace+0x24/0xb0
+[  +0.000001]  ? 0xffffffffc037a000
+[  +0.000001]  __kmalloc+0x209/0x220
+[  +0.000001]  ? __free_pages+0x18/0x30
+[  +0.000000]  ? 0xffffffffc037a000
+[  +0.000001]  my_mod_init+0x28/0x1000 [kmalloc]
+[  +0.000002]  do_one_initcall+0x52/0x19f
+[  +0.000001]  ? _cond_resched+0x19/0x40
+[  +0.000001]  ? kmem_cache_alloc_trace+0x14e/0x1b0
+[  +0.000001]  ? do_init_module+0x27/0x213
+[  +0.000002]  do_init_module+0x5f/0x213
+[  +0.000001]  load_module+0x16bc/0x1f10
+[  +0.000002]  ? ima_post_read_file+0x96/0xa0
+[  +0.000001]  SYSC_finit_module+0xfc/0x120
+[  +0.000001]  ? SYSC_finit_module+0xfc/0x120
+[  +0.000001]  SyS_finit_module+0xe/0x10
+[  +0.000000]  do_syscall_64+0x73/0x130
+[  +0.000002]  entry_SYSCALL_64_after_hwframe+0x3d/0xa2
+[  +0.000000] RIP: 0033:0x7fa408947839
+[  +0.000001] RSP: 002b:00007ffce9455798 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[  +0.000000] RAX: ffffffffffffffda RBX: 0000563d6c8f4780 RCX: 00007fa408947839
+[  +0.000001] RDX: 0000000000000000 RSI: 0000563d6c1b8d2e RDI: 0000000000000003
+[  +0.000000] RBP: 0000563d6c1b8d2e R08: 0000000000000000 R09: 00007fa408c1a000
+[  +0.000000] R10: 0000000000000003 R11: 0000000000000246 R12: 0000000000000000
+[  +0.000001] R13: 0000563d6c8f6e90 R14: 0000000000000000 R15: 0000000000000000
+[  +0.000000] Code: 89 ff 44 89 e6 45 31 ff e8 fe cf ff ff e9 f6 fe ff ff e8 f4 b4 01 00 e9 c5 fe ff ff 45 31 ff 81 e7 00 02 00 00 0f 85 e2 fe ff ff <0f> 0b e9 db fe ff ff 31 c0 e9 5a fe ff ff 65 48 8b 04 25 00 5c 
+[  +0.000012] ---[ end trace 6866de0058e9ffd6 ]---
+[  +0.000001] [KMALLOC_TEST]: could not allocate 8388608 bytes
+[ +13.693867] Exiting module.

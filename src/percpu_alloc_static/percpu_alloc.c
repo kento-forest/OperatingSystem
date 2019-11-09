@@ -16,7 +16,7 @@ static int thread_function(void *data) {
         int cpu;
         get_cpu_var(my_var)++;
         cpu = smp_processor_id();
-        printk("cpu[%d] = %d\n", cpu, get_cpu_var(my_var));
+        printk(PRINT_PREF "cpu[%d] = %d\n", cpu, get_cpu_var(my_var));
         put_cpu_var(my_var);
         msleep(500);
     }
