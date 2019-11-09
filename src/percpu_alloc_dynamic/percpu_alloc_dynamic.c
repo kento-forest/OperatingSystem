@@ -17,7 +17,7 @@ static int thread_function(void *data) {
         local_ptr = get_cpu_ptr(my_var2);
         cpu = smp_processor_id();
         (*local_ptr)++;
-        printk("cpu[%d] = %d\n", cpu, *local_ptr);
+        printk(PRINT_PREF "cpu[%d] = %d\n", cpu, *local_ptr);
         put_cpu_ptr(my_var2);
         msleep(500);
     }
@@ -32,7 +32,7 @@ static int __init my_mod_init(void) {
     my_var2 = alloc_percpu(int);
     if (!my_var2) return -1;
 
-    for (cpu = 0; cpu < NR_CPUS; cpu++) {
+    for_each_possible_cpu(cpu) {
         local_ptr = per_cpu_ptr(my_var2, cpu);
         *local_ptr = 0;
         put_cpu();

@@ -1,4 +1,4 @@
-obj-m := percpu_alloc_dynamic.o
+obj-m += percpu_alloc_dynamic.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules
